@@ -1,27 +1,30 @@
-import  { Sequelize }  from 'sequelize';
-import User from './user.js';
-import Event from './event.js';
-import EventRegistration from './eventRegistration.js';
-import dotenv from 'dotenv';
+import { Sequelize } from "sequelize";
+import sequelize from "../config/database.js";
 
-dotenv.config();
+import userModel from "./user.model.js";
+import teamModel from "./team.model.js";
+import courseModel from "./course.model.js";
+import lessonModel from "./lesson.model.js";
+import teamMembershipModel from "./teamMembership.model.js";
 
-const sequelize = new sequelize(process.env.DB_CONNECTION_STRING, {
-  dialect: 'mysql',
-  logging: false,
-});
+// Initialize models
+const User = userModel(sequelize, Sequelize.DataTypes);
+const Team = teamModel(sequelize, Sequelize.DataTypes);
+const Course = courseModel(sequelize, Sequelize.DataTypes);
+const Lesson = lessonModel(sequelize, Sequelize.DataTypes);
+const TeamMembership = teamMembershipModel(sequelize, Sequelize.DataTypes);
 
+// Define associations
+User.hasMany(Team, { foreignKey: 'ownerId' });
+Team.belongsTo(User, { foreignKey: 'ownerId' });
 
-const db = {
-  sequelize,
-  Sequelize,
-  User: User(sequelize, Sequelize),
-  Event: Event(sequelize, Sequelize),
-  EventRegistration: EventRegistration(sequelize, Sequelize),
-};
+Team.hasMany(Course, { foreignKey: 'teamId' });
+Course.belongsTo(Team, { foreignKey: 'teamId' });
 
-db.User.belongsToMany(db.Event, { through: db.EventRegistration });
-db.Event.belongsToMany(db.User, { through: db.EventRegistration });
+Course.hasMany(Lesson, { foreignKey: 'courseId' });
+Lesson.belongsTo(Course, { foreignKey: 'courseId' });
 
-export default db;
-export { sequelize };
+User.belongsToMany(Team, { through: TeamMembership, foreignKey: 'userId' });
+Team.belongsToMany(User, { through: TeamMembership, foreignKey: 'teamId' });
+
+export { sequelize, User, Team, Course, Lesson, TeamMembership };

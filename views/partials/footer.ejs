@@ -1,0 +1,14 @@
+<footer>
+    <div class="container">
+        <p>&copy; <span id="year"></span> EduTeams. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+    </div>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</footer>

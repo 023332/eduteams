@@ -1,16 +1,19 @@
 {
-  "name": "event-management-system",
-  "version": "1.0.0",
+  "name": "eduteams",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "nodemon app.js"
   },
   "type": "module",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "debug": "~4.4.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "ejs": "~3.1.10",
     "express": "~4.21.2",
     "express-session": "^1.18.1",
@@ -19,26 +22,28 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
+    "mime": "^4.0.7",
     "moment": "^2.30.1",
-    "mongoose": "^8.14.1",
     "morgan": "~1.10.0",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.1",
+    "node": "^23.11.0",
     "nodemailer": "^7.0.0",
     "path": "^0.12.7",
     "query-string": "^9.1.2",
     "sequelize": "^6.37.7",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.22.0",
     "eslint": "^9.22.0",
+    "eslint-config-promise": "^2.0.2",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^17.16.2",
-    "eslint-plugin-promise": "^7.2.1",
     "globals": "^16.0.0",
-    "nodemon": "^3.1.9",
-    "socket.io": "^4.8.1"
+    "nodemon": "^3.1.9"
   }
 }

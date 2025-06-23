@@ -1,27 +1,40 @@
-import mongoose from 'mongoose';
-import express  from 'express';
-import dotenv  from 'dotenv';
-import morgan  from 'morgan';
-import authRoutes  from './routes/authRoutes.js';
-import eventRoutes  from './routes/eventRoutes.js';
-import notificationRoutes  from './routes/notificationRoutes.js';
-
+import express from 'express';
+import  sequelize  from './config/database.js';
+import authRoutes from './routes/auth.routes.js';
+import teamRoutes from './routes/team.routes.js';
+import courseRoutes from './routes/course.routes.js';
+import lessonRoutes from './routes/lesson.routes.js';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(morgan('dev'));
 
+// Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/events', eventRoutes);
+app.use('/api/teams', teamRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/lessons', lessonRoutes);
 
+// Sync database and start server
+const startServer = async () => {
+  try {
+    await sequelize.sync();
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
 
-app.use(errorHandler);
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+startServer();

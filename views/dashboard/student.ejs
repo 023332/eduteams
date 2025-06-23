@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+    
+    <div class="dashboard">
+        <h1>Welcome, <%= user.name %>!</h1>
+        <h2>Your Teams</h2>
+        <ul>
+            <% teams.forEach(team => { %>
+                <li>
+                    <a href="/teams/<%= team.id %>"><%= team.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

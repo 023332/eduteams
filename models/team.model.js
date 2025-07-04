@@ -17,7 +17,6 @@ export default (sequelize, DataTypes) => {
       ownerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        // Do NOT put `references` here when you use associations below
       },
     },
     {

@@ -1,10 +1,10 @@
 import { Team, User, TeamMembership } from '../models/index.js'; // Import models
 
-// Create a new team
+
 export const createTeam = async (req, res) => {
     try {
         const { name } = req.body;
-        const ownerId = req.user.id; // Get the owner ID from the authenticated user
+        const ownerId = req.user.id;
 
         const team = await Team.create({ name, ownerId });
         res.status(201).json(team);
@@ -13,11 +13,11 @@ export const createTeam = async (req, res) => {
     }
 };
 
-// Join an existing team
+
 export const joinTeam = async (req, res) => {
     try {
         const { teamId } = req.body;
-        const userId = req.user.id; // Get the user ID from the authenticated user
+        const userId = req.user.id;
 
         const membership = await TeamMembership.create({ userId, teamId });
         res.status(201).json(membership);
@@ -26,10 +26,10 @@ export const joinTeam = async (req, res) => {
     }
 };
 
-// Get teams for the authenticated user
+
 export const getMyTeams = async (req, res) => {
     try {
-        const userId = req.user.id; // Get the user ID from the authenticated user
+        const userId = req.user.id;
 
         const teams = await Team.findAll({
             include: {

@@ -1,4 +1,4 @@
-// Only one default export
+
 export default function roleMiddleware(role) {
   return (req, res, next) => {
     if (req.user && req.user.role === role) {
@@ -8,8 +8,6 @@ export default function roleMiddleware(role) {
   };
 }
 
-// If you want to export more, use named exports:
 export function anotherMiddleware(req, res, next) {
-  // ...code...
   next();
 }

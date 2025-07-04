@@ -7,14 +7,14 @@ import courseModel from "./course.model.js";
 import lessonModel from "./lesson.model.js";
 import teamMembershipModel from "./teamMembership.model.js";
 
-// Initialize models
+
 const User = userModel(sequelize, Sequelize.DataTypes);
 const Team = teamModel(sequelize, Sequelize.DataTypes);
 const Course = courseModel(sequelize, Sequelize.DataTypes);
 const Lesson = lessonModel(sequelize, Sequelize.DataTypes);
 const TeamMembership = teamMembershipModel(sequelize, Sequelize.DataTypes);
 
-// Define associations
+
 User.hasMany(Team, { foreignKey: 'ownerId' });
 Team.belongsTo(User, { foreignKey: 'ownerId' });
 

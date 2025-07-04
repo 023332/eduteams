@@ -3,7 +3,7 @@ import  Course  from '../models/course.model.js';
 import multer from 'multer';
 import path from 'path';
 
-// Set up multer for file uploads
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/uploads/');
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Create a lesson
+
 export const createLesson = async (req, res) => {
   try {
     const { title, content, courseId } = req.body;
@@ -28,10 +28,10 @@ export const createLesson = async (req, res) => {
   }
 };
 
-// Upload a file
+
 export const uploadFile = upload.single('file');
 
-// Get lessons by course
+
 export const getLessonsByCourse = async (req, res) => {
   try {
     const { courseId } = req.params;

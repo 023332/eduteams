@@ -1,12 +1,12 @@
-import express from 'express';
-import { register, login, getProfile } from '../controllers/auth.controller.js';
-import { validateRegistration } from '../middleware/validator.js';
-import { authMiddleware } from '../middleware/auth.js';
-
+const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/auth.controller');
+const { validateRegistration, validateLogin } = require('../middleware/validator');
 
-router.post('/register', validateRegistration, register);
-router.post('/login', login);
-router.get('/profile', authMiddleware, getProfile);
+// Registration route
+router.post('/register', validateRegistration, authController.register);
 
-export default router;
+// Login route
+router.post('/login', validateLogin, authController.login);
+
+module.exports = router;

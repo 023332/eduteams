@@ -1,14 +1,23 @@
-import express from 'express';
-import { createCourse, getCoursesByTeam } from '../controllers/course.controller.js';
-import { authMiddleware } from '../middleware/auth.js';
-import   roleMiddleware  from '../middleware/role.js';
-
+const express = require('express');
 const router = express.Router();
+const courseController = require('../controllers/course.controller');
+const { validateCourse } = require('../middleware/validator');
+const { auth } = require('../middleware/auth');
+const { role } = require('../middleware/role');
 
+// Route to create a new course
+router.post('/', auth, role('Teacher'), validateCourse, courseController.createCourse);
 
-router.post('/', authMiddleware, roleMiddleware.onlyTeacher, createCourse);
+// Route to get all courses
+router.get('/', courseController.getAllCourses);
 
+// Route to get a specific course by ID
+router.get('/:id', courseController.getCourseById);
 
-router.get('/team/:teamId', authMiddleware, getCoursesByTeam);
+// Route to update a course by ID
+router.put('/:id', auth, role('Teacher'), validateCourse, courseController.updateCourse);
 
-export default router;
+// Route to delete a course by ID
+router.delete('/:id', auth, role('Teacher'), courseController.deleteCourse);
+
+module.exports = router;

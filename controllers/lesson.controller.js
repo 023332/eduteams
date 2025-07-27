@@ -1,43 +1,34 @@
-import  Lesson  from '../models/lesson.model.js';
-import  Course  from '../models/course.model.js';
-import multer from 'multer';
-import path from 'path';
+const { Lesson } = require('../models/lesson.model');
+const { Course } = require('../models/course.model');
 
+// Add a new lesson
+exports.addLesson = async (req, res) => {
+    try {
+        const { title, content, courseId } = req.body;
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
+        // Check if the course exists
+        const course = await Course.findByPk(courseId);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
 
-const upload = multer({ storage });
-
-
-export const createLesson = async (req, res) => {
-  try {
-    const { title, content, courseId } = req.body;
-    const fileUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    const lesson = await Lesson.create({ title, content, fileUrl, courseId });
-    res.status(201).json(lesson);
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating lesson', error });
-  }
+        // Create the lesson
+        const lesson = await Lesson.create({ title, content, courseId });
+        return res.status(201).json(lesson);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error adding lesson', error });
+    }
 };
 
+// Get all lessons for a specific course
+exports.getLessonsByCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params;
 
-export const uploadFile = upload.single('file');
-
-
-export const getLessonsByCourse = async (req, res) => {
-  try {
-    const { courseId } = req.params;
-    const lessons = await Lesson.findAll({ where: { courseId } });
-    res.status(200).json(lessons);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving lessons', error });
-  }
+        // Find lessons associated with the course
+        const lessons = await Lesson.findAll({ where: { courseId } });
+        return res.status(200).json(lessons);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error retrieving lessons', error });
+    }
 };

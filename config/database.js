@@ -1,41 +1,22 @@
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-dotenv.config();
+const { Sequelize } = require('sequelize');
 
-const {
-    DB_HOST,
-    DB_USERNAME,
-    DB_PASSWORD,
-    DB_DATABASE,
-} = process.env;
+// Load environment variables from .env file
+require('dotenv').config();
 
-const CONFIGS = {
-    host: DB_HOST,
+// Create a new instance of Sequelize for MySQL connection
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
     dialect: 'mysql',
-    define: {
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
-        timestamps: true,
-    },
-    logging: false,
-};
+    logging: false, // Disable logging; default: console.log
+});
 
-const MYSQL = new Sequelize(
-    DB_DATABASE,
-    DB_USERNAME,
-    DB_PASSWORD,
-    CONFIGS
-);
+// Test the database connection
+sequelize.authenticate()
+    .then(() => {
+        console.log('Connection to the database has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
 
-(async () => {
-    try {
-        await MYSQL.authenticate();
-        console.log('✅ MYSQL authenticated successfully.');
-    } catch (err) {
-        console.error(' MYSQL authentication failed');
-        console.error(err.stack);
-        process.exit(1);
-    }
-})();
-
-export default MYSQL;
+module.exports = sequelize;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('layout.ejs') %>
+    <div class="container mt-4">
+        <h1>Lessons for <%= course.title %></h1>
+        <div class="list-group">
+            <% lessons.forEach(lesson => { %>
+                <a href="/lessons/<%= lesson.id %>" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1"><%= lesson.title %></h5>
+                    <p class="mb-1"><%= lesson.content.substring(0, 100) %>...</p>
+                </a>
+            <% }) %>
+        </div>
+        <a href="/courses" class="btn btn-primary mt-3">Back to Courses</a>
+    </div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

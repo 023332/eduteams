@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+    
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Welcome, <%= user.name %>!</h1>
+            <p>Your role: <strong><%= user.role %></strong></p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Teams</h2>
+                </div>
+                <% if (teams && teams.length > 0) { %>
+                    <ul class="team-list">
+                        <% teams.forEach(team => { %>
+                            <li>
+                                <a href="/teams/<%= team.id %>"><%= team.name %></a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>You haven't created any teams yet.</p>
+                <% } %>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Create a New Team</h3>
+                    </div>
+                    <form id="teamForm" action="/api/teams" method="POST">
+                        <div>
+                            <label for="teamName">Team Name:</label>
+                            <input type="text" id="teamName" name="name" placeholder="Enter team name" required>
+                        </div>
+                        <div>
+                            <label for="teamDescription">Description:</label>
+                            <textarea id="teamDescription" name="description" placeholder="Enter team description" rows="3"></textarea>
+                        </div>
+                        <button type="submit">Create Team</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Courses</h2>
+                </div>
+                <% if (courses && courses.length > 0) { %>
+                    <ul class="course-list">
+                        <% courses.forEach(course => { %>
+                            <li>
+                                <a href="/courses/<%= course.id %>"><%= course.title %></a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>You haven't created any courses yet.</p>
+                <% } %>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Create a New Course</h3>
+                    </div>
+                    <form id="courseForm" action="/api/courses" method="POST">
+                        <div>
+                            <label for="courseTitle">Course Title:</label>
+                            <input type="text" id="courseTitle" name="title" placeholder="Enter course title" required>
+                        </div>
+                        
+                        <div>
+                            <label for="teamId">Team:</label>
+                            <select id="teamId" name="teamId" required>
+                                <option value="">Select a team</option>
+                                <% if (teams && teams.length > 0) { %>
+                                    <% teams.forEach(team => { %>
+                                        <option value="<%= team.id %>"><%= team.name %></option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
+                        
+                        <button type="submit">Create Course</button>
+                    </form>
+                </div>
+                
+                <p><a href="/courses/create" class="btn">Advanced Course Creation</a></p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Activity</h2>
+                </div>
+                <% if (recentActivity && recentActivity.length > 0) { %>
+                    <ul>
+                        <% recentActivity.forEach(activity => { %>
+                            <li><%= activity.description %> - <%= activity.date %></li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>No recent activity to show.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+    
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

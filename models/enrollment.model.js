@@ -1,35 +1,40 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-class Enrollment extends Model {}
-
-Enrollment.init({
+export default (sequelize, DataTypes) => {
+  const Enrollment = sequelize.define("Enrollment", {
     id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     userId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id',
-        },
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     courseId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: 'courses',
-            key: 'id',
-        },
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
-}, {
-    sequelize,
-    modelName: 'Enrollment',
-    tableName: 'enrollments',
-    timestamps: true,
-});
+    enrollmentDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    completionDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    progress: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+        max: 100,
+      },
+    },
+  });
 
-module.exports = Enrollment;
+  return Enrollment;
+};

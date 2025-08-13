@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Lesson - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Create New Lesson</h1>
+        <h2>Course: <%= course.title %></h2>
+        
+        <form action="/api/lessons" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="courseId" value="<%= course.id %>">
+            
+            <div>
+                <label for="title">Lesson Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div>
+                <label for="order">Lesson Order:</label>
+                <input type="number" id="order" name="order">
+            </div>
+            
+            <div>
+                <label for="duration">Duration (minutes):</label>
+                <input type="number" id="duration" name="duration">
+            </div>
+            
+            <div>
+                <label for="videoUrl">Video URL:</label>
+                <input type="url" id="videoUrl" name="videoUrl">
+            </div>
+            
+            <div>
+                <label for="content">Lesson Content:</label>
+                <textarea id="content" name="content" rows="10"></textarea>
+            </div>
+            
+            <div>
+                <label for="file">Upload Materials (PDF, Word, Text files only):</label>
+                <input type="file" id="file" name="file">
+            </div>
+            
+            <button type="submit">Create Lesson</button>
+        </form>
+        
+        <div class="navigation">
+            <a href="/courses/<%= course.id %>" class="btn">Back to Course</a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

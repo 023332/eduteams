@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= course.title %> - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1><%= course.title %></h1>
+        
+        <div class="course-info">
+            <% if (course.description) { %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Description</h2>
+                    </div>
+                    <p><%= course.description %></p>
+                </div>
+            <% } %>
+            
+            <% if (course.startDate || course.endDate) { %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Course Dates</h2>
+                    </div>
+                    <% if (course.startDate) { %>
+                        <p>Start Date: <%= course.startDate.toDateString() %></p>
+                    <% } %>
+                    <% if (course.endDate) { %>
+                        <p>End Date: <%= course.endDate.toDateString() %></p>
+                    <% } %>
+                </div>
+            <% } %>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Lessons</h2>
+                </div>
+                <% if (lessons.length > 0) { %>
+                    <ul class="lesson-list">
+                        <% lessons.forEach(lesson => { %>
+                            <li>
+                                <a href="/lessons/<%= lesson.id %>"><%= lesson.title %></a>
+                                <% if (lesson.duration) { %>
+                                    <span>(<%= lesson.duration %> minutes)</span>
+                                <% } %>
+                                <% if (lesson.fileUrl) { %>
+                                    <a href="<%= lesson.fileUrl %>" download>Download Materials</a>
+                                <% } %>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>No lessons available for this course yet.</p>
+                <% } %>
+            </div>
+        </div>
+        
+        <% if (user && user.role === 'student') { %>
+            <div class="student-actions card">
+                <div class="card-header">
+                    <h2 class="card-title">Student Actions</h2>
+                </div>
+                <% if (enrollment) { %>
+                    <p>You are enrolled in this course.</p>
+                    <p>Progress: <%= enrollment.progress %>%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: <%= enrollment.progress %>%"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="/enrollments" class="btn btn-secondary">View My Enrollments</a>
+                    </div>
+                <% } else { %>
+                    <form action="/api/enrollments" method="POST">
+                        <input type="hidden" name="courseId" value="<%= course.id %>">
+                        <div class="action-buttons">
+                            <button type="submit" class="btn">Enroll in Course</button>
+                            <a href="/enrollments" class="btn btn-secondary">View My Enrollments</a>
+                        </div>
+                    </form>
+                <% } %>
+            </div>
+        <% } %>
+        
+        <% if (user && user.role === 'teacher') { %>
+            <div class="teacher-actions card">
+                <div class="card-header">
+                    <h2 class="card-title">Teacher Actions</h2>
+                </div>
+                <div class="action-buttons">
+                    <a href="/api/courses/<%= course.id %>/edit" class="btn">Edit Course</a>
+                    <a href="/lessons/create?courseId=<%= course.id %>" class="btn">Add New Lesson</a>
+                    <a href="/api/enrollments/course/<%= course.id %>" class="btn btn-secondary">View Enrollments</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

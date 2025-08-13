@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTeams - Online Learning Platform</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('./partials/header.ejs') %>
+
+    <div class="container">
+        <header class="hero card">
+            <h1>Welcome to EduTeams</h1>
+            <p>Your online learning platform for collaborative education</p>
+            <% if (!user) { %>
+                <div class="cta-buttons">
+                    <a href="/auth/login" class="btn">Login</a>
+                    <a href="/auth/register" class="btn btn-secondary">Register</a>
+                </div>
+            <% } %>
+        </header>
+
+        <section class="features">
+            <h2>Why Choose EduTeams?</h2>
+            <div class="feature-grid">
+                <div class="card feature-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Collaborative Learning</h3>
+                    </div>
+                    <p>Work together with classmates and teachers in virtual teams</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Course Management</h3>
+                    </div>
+                    <p>Create and manage courses with ease</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lesson Materials</h3>
+                    </div>
+                    <p>Upload and download educational resources</p>
+                </div>
+            </div>
+        </section>
+
+        <% if (user) { %>
+            <section class="dashboard-link card">
+                <div class="card-header">
+                    <h2 class="card-title">Get Started</h2>
+                </div>
+                <p>Continue your learning journey</p>
+                <a href="/dashboard" class="btn">Go to Dashboard</a>
+            </section>
+        <% } %>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

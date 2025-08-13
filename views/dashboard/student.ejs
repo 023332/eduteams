@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+    
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Welcome, <%= user.name %>!</h1>
+            <p>Your role: <strong><%= user.role %></strong></p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Teams</h2>
+                </div>
+                <% if (teams && teams.length > 0) { %>
+                    <ul class="team-list">
+                        <% teams.forEach(team => { %>
+                            <li>
+                                <a href="/teams/<%= team.id %>"><%= team.name %></a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>You are not part of any teams yet. Join a team to get started!</p>
+                <% } %>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Courses</h2>
+                </div>
+                <% if (courses && courses.length > 0) { %>
+                    <ul class="course-list">
+                        <% courses.forEach(course => { %>
+                            <li>
+                                <a href="/courses/<%= course.id %>"><%= course.title %></a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>You are not enrolled in any courses yet.</p>
+                <% } %>
+                <p><a href="/enrollments" class="btn">View All Enrollments</a></p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Activity</h2>
+                </div>
+                <% if (recentActivity && recentActivity.length > 0) { %>
+                    <ul>
+                        <% recentActivity.forEach(activity => { %>
+                            <li><%= activity.description %> - <%= activity.date %></li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>No recent activity to show.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+    
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

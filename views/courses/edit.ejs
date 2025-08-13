@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Edit Course</h1>
+        
+        <form action="/api/courses/<%= course.id %>" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            
+            <div>
+                <label for="title">Course Title:</label>
+                <input type="text" id="title" name="title" value="<%= course.title %>" required>
+            </div>
+            
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4"><%= course.description || '' %></textarea>
+            </div>
+            
+            <div>
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" value="<%= course.startDate ? course.startDate.toISOString().split('T')[0] : '' %>">
+            </div>
+            
+            <div>
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="endDate" value="<%= course.endDate ? course.endDate.toISOString().split('T')[0] : '' %>">
+            </div>
+            
+            <button type="submit">Update Course</button>
+        </form>
+        
+        <div class="navigation">
+            <a href="/courses/<%= course.id %>" class="btn">Back to Course</a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

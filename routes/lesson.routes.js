@@ -1,23 +1,26 @@
-const express = require('express');
+import express from 'express';
+import { createLesson, uploadFile, getLessonsByCourse, getLessonById, createLessonForm, getLessonEditForm, updateLesson, deleteLesson } from '../controllers/lesson.controller.js';
+import { authMiddleware } from '../middleware/auth.js';
+import roleMiddleware from '../middleware/role.middleware.js';
+import { validateLesson } from '../middleware/validator.js';
+
 const router = express.Router();
-const lessonController = require('../controllers/lesson.controller');
-const { validateLesson } = require('../middleware/validator');
-const auth = require('../middleware/auth');
-const role = require('../middleware/role');
 
-// Route to add a new lesson
-router.post('/', auth, role('Teacher'), validateLesson, lessonController.addLesson);
 
-// Route to get all lessons for a specific course
-router.get('/course/:courseId', lessonController.getLessonsByCourse);
+router.post('/', authMiddleware, roleMiddleware('teacher'), validateLesson, uploadFile, createLesson);
 
-// Route to get a specific lesson by ID
-router.get('/:id', lessonController.getLessonById);
 
-// Route to update a lesson by ID
-router.put('/:id', auth, role('Teacher'), validateLesson, lessonController.updateLesson);
+router.post('/upload', authMiddleware, roleMiddleware('teacher'), uploadFile);
 
-// Route to delete a lesson by ID
-router.delete('/:id', auth, role('Teacher'), lessonController.deleteLesson);
 
-module.exports = router;
+router.get('/course/:id', authMiddleware, getLessonsByCourse);
+
+router.get('/:id', authMiddleware, getLessonById);
+
+router.get('/create', authMiddleware, roleMiddleware('teacher'), createLessonForm);
+router.get('/:id/edit', authMiddleware, roleMiddleware('teacher'), getLessonEditForm);
+
+router.put('/:id', authMiddleware, roleMiddleware('teacher'), validateLesson, uploadFile, updateLesson);
+router.delete('/:id', authMiddleware, roleMiddleware('teacher'), deleteLesson);
+
+export default router;

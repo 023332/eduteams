@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Course Lessons</h1>
+        
+        <% if (lessons.length > 0) { %>
+            <ul class="lesson-list">
+                <% lessons.forEach(lesson => { %>
+                    <li>
+                        <a href="/lessons/<%= lesson.id %>"><%= lesson.title %></a>
+                        <% if (lesson.duration) { %>
+                            <span>(<%= lesson.duration %> minutes)</span>
+                        <% } %>
+                        <% if (lesson.fileUrl) { %>
+                            <a href="<%= lesson.fileUrl %>" download>Download Materials</a>
+                        <% } %>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No lessons available for this course yet.</p>
+        <% } %>
+        
+        <% if (user && user.role === 'teacher') { %>
+            <div class="teacher-actions">
+                <a href="/lessons/create?courseId=<%= courseId %>" class="btn">Add New Lesson</a>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

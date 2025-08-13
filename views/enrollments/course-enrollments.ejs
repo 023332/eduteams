@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Enrollments - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+    
+    <div class="container">
+        <h1>Course Enrollments</h1>
+        
+        <% if (enrollments && enrollments.length > 0) { %>
+            <div class="enrollment-list">
+                <% enrollments.forEach(enrollment => { %>
+                    <div class="enrollment-card">
+                        <h3><%= enrollment.User.name %></h3>
+                        <p>Enrolled on: <%= enrollment.enrollmentDate.toDateString() %></p>
+                        <p>Progress: <%= enrollment.progress %>%</p>
+                        <% if (enrollment.completionDate) { %>
+                            <p>Completed on: <%= enrollment.completionDate.toDateString() %></p>
+                        <% } %>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: <%= enrollment.progress %>%"></div>
+                        </div>
+                        
+                        <% if (enrollment.User.id === user.id) { %>
+                            <button class="btn update-progress-btn" data-enrollment-id="<%= enrollment.id %>">Update Progress</button>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p>No students enrolled in this course yet.</p>
+        <% } %>
+    </div>
+    
+    <%- include('../partials/footer.ejs') %>
+    
+    <script src="/js/enrollments.js"></script>
+</body>
+</html>

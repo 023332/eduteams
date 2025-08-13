@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= lesson.title %> - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1><%= lesson.title %></h1>
+        
+        <div class="lesson-content">
+            <% if (lesson.videoUrl) { %>
+                <div class="lesson-video">
+                    <h2>Lesson Video</h2>
+                    <div class="video-container">
+                        <iframe src="<%= lesson.videoUrl %>" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            <% } %>
+            
+            <% if (lesson.content) { %>
+                <div class="lesson-text">
+                    <h2>Lesson Content</h2>
+                    <p><%= lesson.content %></p>
+                </div>
+            <% } %>
+            
+            <% if (lesson.fileUrl) { %>
+                <div class="lesson-materials">
+                    <h2>Class Materials</h2>
+                    <a href="<%= lesson.fileUrl %>" download class="btn">Download Materials</a>
+                </div>
+            <% } %>
+        </div>
+        
+        <% if (user && user.role === 'teacher') { %>
+            <div class="teacher-actions">
+                <h2>Teacher Actions</h2>
+                <a href="/api/lessons/<%= lesson.id %>/edit" class="btn">Edit Lesson</a>
+            </div>
+        <% } %>
+        
+        <% if (user && user.role === 'student' && enrollment) { %>
+            <div class="student-actions">
+                <h2>Student Actions</h2>
+                <button class="btn complete-lesson-btn" data-enrollment-id="<%= enrollment.id %>" data-lesson-id="<%= lesson.id %>">Mark as Complete</button>
+            </div>
+        <% } %>
+        
+        <div class="navigation">
+            <a href="/courses/<%= lesson.courseId %>" class="btn">Back to Course</a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

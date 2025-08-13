@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Enrollments - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+    
+    <div class="container">
+        <h1>My Enrollments</h1>
+        
+        <% if (enrollments && enrollments.length > 0) { %>
+            <div class="enrollment-list">
+                <% enrollments.forEach(enrollment => { %>
+                    <div class="card enrollment-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><a href="/courses/<%= enrollment.Course.id %>"><%= enrollment.Course.title %></a></h3>
+                        </div>
+                        <p>Created by: <%= enrollment.Course.User.name %></p>
+                        <p>Enrolled on: <%= enrollment.enrollmentDate.toDateString() %></p>
+                        <p>Progress: <span class="progress-text" data-enrollment-id="<%= enrollment.id %>"><%= enrollment.progress %></span>%</p>
+                        <% if (enrollment.completionDate) { %>
+                            <p>Completed on: <%= enrollment.completionDate.toDateString() %></p>
+                        <% } %>
+                        
+                        <div class="progress-bar" data-enrollment-id="<%= enrollment.id %>">
+                            <div class="progress-fill" style="width: <%= enrollment.progress %>%"></div>
+                        </div>
+                        
+                        <div class="enrollment-actions">
+                            <div class="action-buttons">
+                                <button class="btn update-progress-btn" data-enrollment-id="<%= enrollment.id %>">Update Progress</button>
+                                <form action="/api/enrollments/<%= enrollment.id %>?_method=DELETE" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-secondary">Unenroll</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card">
+                <p>You are not enrolled in any courses yet.</p>
+                <p><a href="/courses" class="btn">Browse Courses</a></p>
+            </div>
+        <% } %>
+    </div>
+    
+    <%- include('../partials/footer.ejs') %>
+    
+    <script src="/js/enrollments.js"></script>
+</body>
+</html>

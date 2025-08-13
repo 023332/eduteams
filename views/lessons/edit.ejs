@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Lesson - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Edit Lesson</h1>
+        <h2>Course: <%= course.title %></h2>
+        
+        <form action="/api/lessons/<%= lesson.id %>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="PUT">
+            
+            <div>
+                <label for="title">Lesson Title:</label>
+                <input type="text" id="title" name="title" value="<%= lesson.title %>" required>
+            </div>
+            
+            <div>
+                <label for="order">Lesson Order:</label>
+                <input type="number" id="order" name="order" value="<%= lesson.order || '' %>">
+            </div>
+            
+            <div>
+                <label for="duration">Duration (minutes):</label>
+                <input type="number" id="duration" name="duration" value="<%= lesson.duration || '' %>">
+            </div>
+            
+            <div>
+                <label for="videoUrl">Video URL:</label>
+                <input type="url" id="videoUrl" name="videoUrl" value="<%= lesson.videoUrl || '' %>">
+            </div>
+            
+            <div>
+                <label for="content">Lesson Content:</label>
+                <textarea id="content" name="content" rows="10"><%= lesson.content || '' %></textarea>
+            </div>
+            
+            <div>
+                <label for="file">Upload Materials (PDF, Word, Text files only):</label>
+                <input type="file" id="file" name="file">
+                <% if (lesson.fileUrl) { %>
+                    <p>Current file: <a href="<%= lesson.fileUrl %>" download>Download</a></p>
+                <% } %>
+            </div>
+            
+            <button type="submit">Update Lesson</button>
+        </form>
+        
+        <div class="navigation">
+            <a href="/lessons/<%= lesson.id %>" class="btn">Back to Lesson</a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

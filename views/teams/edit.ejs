@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Team - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Edit Team</h1>
+        
+        <form action="/api/teams/<%= team.id %>" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            
+            <div>
+                <label for="name">Team Name:</label>
+                <input type="text" id="name" name="name" value="<%= team.name %>" required>
+            </div>
+            
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4"><%= team.description || '' %></textarea>
+            </div>
+            
+            <button type="submit">Update Team</button>
+        </form>
+        
+        <div class="navigation">
+            <a href="/teams/<%= team.id %>" class="btn">Back to Team</a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

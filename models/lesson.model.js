@@ -1,30 +1,50 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { Model, DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-class Lesson extends Model {}
-
-Lesson.init({
-    title: {
+export default (sequelize, DataTypes) => {
+  class Lesson extends Model {}
+  Lesson.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    content: {
+      },
+      content: {
         type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    courseId: {
+        allowNull: true,
+      },
+      fileUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      courseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: 'courses', // refers to the Course model
-            key: 'id',
-        },
+      },
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      duration: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        comment: "Duration in minutes",
+      },
+      videoUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-}, {
-    sequelize,
-    modelName: 'Lesson',
-    tableName: 'lessons',
-    timestamps: true,
-});
-
-module.exports = Lesson;
+    {
+      sequelize,
+      modelName: "Lesson",
+      tableName: "lessons",
+    }
+  );
+  return Lesson;
+};

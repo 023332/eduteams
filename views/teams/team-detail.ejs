@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= team.name %> - EduTeams</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+        <h1>Team: <%= team.name %></h1>
+        
+        <% if (team.description) { %>
+            <div class="card team-description">
+                <div class="card-header">
+                    <h2 class="card-title">Description</h2>
+                </div>
+                <p><%= team.description %></p>
+            </div>
+        <% } %>
+        
+        <div class="card team-info">
+            <div class="card-header">
+                <h2 class="card-title">Members</h2>
+            </div>
+            <% if (team.members && team.members.length > 0) { %>
+                <ul class="team-members">
+                    <% team.members.forEach(member => { %>
+                        <li>
+                            <%= member.name %>
+                            <% if (member.role) { %>
+                                (<%= member.role %>)
+                            <% } %>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No members in this team yet.</p>
+            <% } %>
+        </div>
+        
+        <div class="card team-courses">
+            <div class="card-header">
+                <h2 class="card-title">Courses</h2>
+            </div>
+            <% if (courses && courses.length > 0) { %>
+                <ul class="course-list">
+                    <% courses.forEach(course => { %>
+                        <li>
+                            <a href="/courses/<%= course.id %>"><%= course.title %></a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No courses available for this team yet.</p>
+            <% } %>
+        </div>
+        
+        <% if (user && user.role === 'teacher' && user.id === team.ownerId) { %>
+            <div class="teacher-actions card">
+                <div class="card-header">
+                    <h2 class="card-title">Teacher Actions</h2>
+                </div>
+                <div class="action-buttons">
+                    <a href="/api/teams/<%= team.id %>/edit" class="btn">Edit Team</a>
+                    <a href="/courses/create?teamId=<%= team.id %>" class="btn">Add New Course</a>
+                    <form action="/api/teams/<%= team.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure you want to delete this team? This action cannot be undone.')">Delete Team</button>
+                    </form>
+                </div>
+            </div>
+        <% } else if (user && user.role === 'teacher') { %>
+            <div class="teacher-actions card">
+                <div class="card-header">
+                    <h2 class="card-title">Teacher Actions</h2>
+                </div>
+                <div class="action-buttons">
+                    <a href="/courses/create?teamId=<%= team.id %>" class="btn">Add New Course</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>
